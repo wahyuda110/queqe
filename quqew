@@ -1,0 +1,65 @@
+(function() {
+    const logMessage = "Query mu Sudah berhasil diambil ";
+    
+    // Function to fetch data from the given cURL request URL
+    function fetchDataFromUrl() {
+        const url = 'https://cats-backend-wkejfn-production.up.railway.app/user';
+        const headers = {
+            'authority': 'cats-backend-wkejfn-production.up.railway.app',
+            'accept': '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'authorization': 'tma user=%7B%22id%22%3A6435080946%2C%22first_name%22%3A%22Meow%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22btcdie%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=-1789923592215135516&chat_type=sender&auth_date=1724856186&hash=7e952c52cfa8b394d0c3bc8de98f24a419987c557f376176c4a824ddecf4010e',
+            'content-type': 'application/json',
+            'origin': 'https://cats-frontend.tgapps.store',
+            'referer': 'https://cats-frontend.tgapps.store/',
+            'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114", "Microsoft Edge WebView2";v="114"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'cross-site',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67'
+        };
+
+        fetch(url, {
+            method: 'GET',
+            headers: headers,
+        })
+        .then(response => response.text())
+        .then(data => {
+            const extractedData = extractDataFromAuthorization(headers['authorization']);
+            if (extractedData) {
+                console.log(`%c${logMessage}`, 'color: purple; font-weight: bold;');
+                copyToClipboard(extractedData);
+            } else {
+                console.log("Tidak menemukan data yang sesuai dalam authorization header.");
+            }
+        })
+        .catch(error => {
+            console.log("Gagal mengambil data dari URL", error);
+        });
+    }
+
+    // Function to extract the desired data from the authorization header
+    function extractDataFromAuthorization(authHeader) {
+        const regex = /user=%7B.*?%7D&chat_instance=.*?&hash=.*?$/;
+        const match = authHeader.match(regex);
+        return match ? match[0] : null;
+    }
+
+    // Function to copy data to clipboard
+    function copyToClipboard(data) {
+        const textarea = document.createElement("textarea");
+        textarea.value = data;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        if (data) {
+            console.log("%cBeli Kebutuhan VPS/RDP di Kuro Store, Menjual Digital Ocean Termurah\nhttps://t.me/kurodigital", 'color: blue; font-weight: bold;'); 
+            console.log("%cQuery_ID telah disalin ke clipboard.", 'color: green; font-weight: bold;');
+        }
+    }
+
+    fetchDataFromUrl();
+})();
